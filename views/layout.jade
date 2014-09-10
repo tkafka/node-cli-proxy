@@ -1,0 +1,32 @@
+doctype
+html(lang='en')
+	//<![end if]
+	head
+		meta(charset='utf-8')
+		meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+		title=title
+		meta(name="description", content=description)
+		meta(name="author", content=author)
+		meta(name="viewport", content='width=device-width, initial-scale=1')
+		link(rel='stylesheet', href='/css/style.css')
+		//-script(src='js/libs/modernizr-2.0.6.min.js')
+	body
+		header
+			block header
+				h1
+					a(href='/') Script runner
+				ul.menu.menu-horizontal
+					each job, key in jobs
+						li
+							a(href='/'+key)
+								span.title= job.name
+								if job.description
+									span.description= job.description
+
+		#content
+			block content
+
+		footer
+			block footer
+
+		block script

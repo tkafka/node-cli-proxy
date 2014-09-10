@@ -1,0 +1,28 @@
+extends layout
+
+block content
+	.console-wrapper
+		.overlay
+			ul#job-variants.menu.job-variants
+				each variant, key in jobVariants
+					li
+						a(href='#'+key,class=variant.cssClass?variant.cssClass:'')
+							span.title= variant.name
+							if variant.description
+								span.description= variant.description
+		.spinner
+			.rect1
+			.rect2
+			.rect3
+			.rect4
+			.rect5
+		#console
+
+block script
+	script(src='//code.jquery.com/jquery-2.1.1.min.js')
+	script(src='/socket.io/socket.io.js')
+	script.
+		var jobKey = "!{jobKey}";
+	script(src='/js/clientBrowserified.js')
+
+
