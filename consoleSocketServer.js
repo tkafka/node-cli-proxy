@@ -2,7 +2,7 @@ var spawn = require('child_process').spawn;
 var debug = require('debug')('consoleSocketServer');
 var socketIo = require('socket.io');
 
-var jobs = require('./jobs');
+var getFreshJobs = require('./utils/getFreshJobs');
 var randomJobId = require('./utils/random/randomJobId');
 
 var SocketServer = function () {
@@ -17,6 +17,8 @@ SocketServer.prototype.listen = function (httpServer) {
 	this.server = socketIo(httpServer);
 
 	this.server.on('connection', function (socket) {
+		var jobs = getFreshJobs();
+
 		debug('user connected');
 
 		var jobId = null;
@@ -107,6 +109,15 @@ SocketServer.prototype.listen = function (httpServer) {
 				socketError(socket, 'Job is not running, ignoring input.');
 			} else {
 				cmd.stdin.write(buffer + '\n');
+			}
+		});
+
+		socket.on('ctrl+c', function() {
+			if (!cmd) {
+				socketError(socket, 'Job is not running, ignoring input.');
+			} else {
+				cmd.kill();
+				debug('Job ' + jobStrId + ' killed.');
 			}
 		});
 

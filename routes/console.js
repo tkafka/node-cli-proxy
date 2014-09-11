@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
-
-var jobs = require('../jobs');
+var getFreshJobs = require('../utils/getFreshJobs');
 
 router.get('/:script?', function (req, res) {
+	var jobs = getFreshJobs();
+
 	var scriptKey = req.params.script;
 
 	if (!jobs.hasOwnProperty(scriptKey)) {

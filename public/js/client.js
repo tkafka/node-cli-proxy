@@ -24,8 +24,14 @@ $(function () {
 
 	consoleDisplay.on('newline', function(buffer) {
 		if (jobInProgressId) {
-			// socket.emit('l');
 			socket.emit('line', buffer);
+		}
+	});
+
+	consoleDisplay.on('ctrl+c', function() {
+		if (jobInProgressId) {
+			consoleDisplay.warning('Ctrl+C detected, killing job on server.');
+			socket.emit('ctrl+c');
 		}
 	});
 

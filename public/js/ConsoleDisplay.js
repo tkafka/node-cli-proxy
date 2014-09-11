@@ -30,14 +30,21 @@ var scrollSlack = 10;
 
 var ConsoleDisplay = function ($root) {
 	this.$root = $root;
-	this.log = [];
 
+	this._lastLineSource = null;
+	this._lastLineClass = null;
 	this.$lastLine = this.createAndAppendLine();
 
 	this.$inputLine = createInputBuffer();
 	this.$root.append(this.$inputLine);
 
 	this._keystrokeListener = new KeystrokeListener(document);
+
+	// listeners:
+
+	this._keystrokeListener.on('ctrl+c', function() {
+		this.emit('ctrl+c');
+	}.bind(this));
 
 	// char
 	this._keystrokeListener.on('character', function(arg) {
@@ -50,7 +57,7 @@ var ConsoleDisplay = function ($root) {
 		this._setInput(buffer);
 	}.bind(this));
 
-	this._keystrokeListener.on('flash', function(buffer) {
+	this._keystrokeListener.on('flash', function() {
 		this.$root.addClass('console-flash');
 		setTimeout(function() {
 			this.$root.removeClass('console-flash');
@@ -58,13 +65,17 @@ var ConsoleDisplay = function ($root) {
 	}.bind(this));
 
 	// enter pressed - send buffer
+	// TODO: when data arrives, we should reset the buffer, as it probably means that input was discarded
 	this._keystrokeListener.on('newline', function(buffer) {
 		this.emit('newline', buffer);
 		// this.emit('line', buffer);
 		this.$inputLine.addClass('input-buffer-sent');
-		// create new input buffer
+
+		// create new input buffer for future input, and add it to end
 		this.$inputLine = createInputBuffer();
 		this.$lastLine.append(this.$inputLine);
+
+		this._writeLine(''); // hack, to ensure that $inputLine won't get deleted. this needs to go after creating a new buffer, so that we don't put finished input line into a new text line.
 	}.bind(this));
 };
 inherits(ConsoleDisplay, EventEmitter);
@@ -74,21 +85,44 @@ ConsoleDisplay.prototype._setInput = function (str) {
 	this.$inputLine.text(str);
 };
 
-ConsoleDisplay.prototype._write = function (str, cssClass) {
-	var strHtml = ansiToHtml.toHtml(escapeInHtmlContext(str)).replace(/\n/g, '<br/>');
+ConsoleDisplay.prototype._writeLine = function (str, cssClass) {
+	return this._write(str + '\n', cssClass);
+};
 
-	// console.log('Console write', str);
-	this.log.push(str);
+ConsoleDisplay.prototype._write = function (str, cssClass) {
+	var lines = str.split('\n');
+	if (lines.length === 0) {
+		return;
+	}
 
 	var wasScrolledToBottom = isDivScrolledToBottom(this.$root, scrollSlack);
-	this.$lastLine = this.createAndAppendLine(strHtml, cssClass);
+
+	var startLine = 0;
+	if (this._lastLineSource
+		&& this._lastLineClass == cssClass)
+	{
+		// append to existing current line
+		startLine = 1;
+		this._lastLineSource += lines[0];
+		var lastLineHtml = ansiToHtml.toHtml(escapeInHtmlContext(this._lastLineSource));
+		this.$lastLine.html(lastLineHtml);
+	}
+
+	// some lines remaining?
+	// remember, if last line was ended with \n, last line entry will be empty string
+	for (var i = startLine, l = lines.length; i<l; i++) {
+		var strHtml = ansiToHtml.toHtml(escapeInHtmlContext(lines[i])); // .replace(/\n/g, '<br/>')
+		this.$lastLine = this.createAndAppendLine(lines[i], strHtml, cssClass);
+	}
 
 	if (wasScrolledToBottom) {
 		scrollToBottomOfDiv(this.$root);
 	}
 };
 
-ConsoleDisplay.prototype.createAndAppendLine = function(strHtml, cssClass) {
+ConsoleDisplay.prototype.createAndAppendLine = function(strSource, strHtml, cssClass) {
+	this._lastLineSource = strSource;
+	this._lastLineClass = cssClass;
 	var $line = $('<div class="line' + (cssClass ? ' ' + cssClass : '') +'">' + (strHtml ? strHtml : '') + '</div>');
 	this.$root.append($line);
 	// move input line at the end
@@ -110,27 +144,27 @@ ConsoleDisplay.prototype.write = function (str) {
 };
 
 ConsoleDisplay.prototype.info = function (str) {
-	this._write(str, 'line-info line-client-info');
+	this._writeLine(str, 'line-info line-client-info');
 };
 
 ConsoleDisplay.prototype.warning = function (str) {
-	this._write(str, 'line-warning line-client-warning');
+	this._writeLine(str, 'line-warning line-client-warning');
 };
 
 ConsoleDisplay.prototype.error = function (str) {
-	this._write(str, 'line-error line-client-error');
+	this._writeLine(str, 'line-error line-client-error');
 };
 
 ConsoleDisplay.prototype.infoServer = function (str) {
-	this._write(str, 'line-info line-server-info');
+	this._writeLine(str, 'line-info line-server-info');
 };
 
 ConsoleDisplay.prototype.warningServer = function (str) {
-	this._write(str, 'line-warning line-server-warning');
+	this._writeLine(str, 'line-warning line-server-warning');
 };
 
 ConsoleDisplay.prototype.errorServer = function (str) {
-	this._write(str, 'line-error line-server-error');
+	this._writeLine(str, 'line-error line-server-error');
 };
 
 ConsoleDisplay.prototype.stdout = function (str) {
