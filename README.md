@@ -34,6 +34,7 @@ Example jobs.js file:
 	};
 
 Uses [socket.io](http://socket.io/) to keep the link with server while job is running, kills job on server when user closes browser to prevent resource leaking.
+Jobs file is reloaded on every request, so feel free to edit it on the go.
 
 Made in Prague by [@keff85](http://twitter.com/keff85).
 
