@@ -8,7 +8,7 @@ $(function () {
 	var $jobVariantButtons = $overlay.find('#job-variants a');
 	$jobVariantButtons.click(function (e) {
 		var jobVariantKey = $(this).attr('href').replace('#', '');
-		consoleDisplay.info('Staring job ' + jobKey + '/' + jobVariantKey + ' on server:');
+		consoleDisplay.info('Starting job ' + jobKey + '/' + jobVariantKey + ' on server:');
 		socket.emit('start job', {
 			jobKey: jobKey,
 			jobVariantKey: jobVariantKey

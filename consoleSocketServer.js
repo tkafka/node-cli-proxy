@@ -44,10 +44,17 @@ SocketServer.prototype.listen = function (httpServer) {
 				jobStrVariant = jobDesc.jobKey + '/' + jobDesc.jobVariantKey;
 				jobStrId = jobStrVariant + '(' + jobId + ')';
 
-				socket.emit('job start', jobId);
+				jobDescriptor = { 
+					id: jobId,
+					command: jobVariant.command,
+					args: jobVariant.args || [],
+					basePath: jobVariant.basePath || job.basePath || __dirname
+				};
 
-				cmd = spawn(jobVariant.script, jobVariant.args || [], {
-					cwd: job.basePath
+				socket.emit('job start', jobDescriptor);
+
+				cmd = spawn(jobDescriptor.command, jobDescriptor.args, {
+					cwd: jobDescriptor.basePath
 				});
 
 				cmd.stdout.on('data', function (data) {
@@ -65,6 +72,13 @@ SocketServer.prototype.listen = function (httpServer) {
 				cmd.on('close', function (code) {
 					socket.emit('job end', jobId);
 					socket.disconnect();
+					cmd = null;
+					jobId = null;
+				});
+
+				cmd.on('error', function (e) {
+					socket.emit('job end', jobId);
+					socketErrorAndDisconnect(socket, 'Process could not be started with a following error: ' + e.message);
 					cmd = null;
 					jobId = null;
 				});
