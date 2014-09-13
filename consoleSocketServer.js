@@ -44,7 +44,7 @@ SocketServer.prototype.listen = function (httpServer) {
 				jobStrVariant = jobDesc.jobKey + '/' + jobDesc.jobVariantKey;
 				jobStrId = jobStrVariant + '(' + jobId + ')';
 
-				jobDescriptor = { 
+				var jobDescriptor = {
 					id: jobId,
 					command: jobVariant.command,
 					args: jobVariant.args || [],
