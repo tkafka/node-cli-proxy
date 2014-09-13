@@ -1,4 +1,4 @@
-Node.js proxy for server-side interactive cli programs
+Node.js web frontend server-side interactive cli programs
 ---
 
 Define jobs in [jobs.js](https://github.com/tkafka/node-cli-proxy/blob/master/jobs.js), and let users run them and interact with their stdin through web browser.
