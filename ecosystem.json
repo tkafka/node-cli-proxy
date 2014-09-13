@@ -1,0 +1,32 @@
+{
+	"apps" : [{
+		"name"      : "console-proxy-demo",
+		"script"    : "bin/server.js",
+		"env": {
+			"DEBUG": "",
+			"PORT": "3999"
+		},
+		"env_production" : {
+			"NODE_ENV": "production"
+		}
+	}],
+	"deploy" : {
+		"production" : {
+			"user" : "dokku",
+			"host" : "95.85.50.154",
+			"port" : "6789",
+			"ref"  : "origin/master",
+			"repo" : "git@github.com:tkafka/node-console-proxy.git",
+			"path" : "/home/dokku/console-proxy-demo",
+			"post-deploy" : "npm install && pm2 startOrRestart ecosystem.json --env production"
+		},
+		"dev" : {
+			"user" : "tk",
+			"host" : "localhost",
+			"ref"  : "origin/master",
+			"repo" : "git@github.com:tkafka/node-console-proxy.git",
+			"path" : "/Users/tk/Desktop/Dev/console-proxy-deploy",
+			"post-deploy" : "npm install && pm2 startOrRestart ecosystem.json --env dev"
+		}
+	}
+}
