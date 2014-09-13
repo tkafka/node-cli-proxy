@@ -48,13 +48,13 @@ SocketServer.prototype.listen = function (httpServer) {
 					id: jobId,
 					command: jobVariant.command,
 					args: jobVariant.args || [],
-					basePath: jobVariant.basePath || job.basePath || __dirname
+					cwd: jobVariant.cwd || job.cwd || __dirname
 				};
 
 				socket.emit('job start', jobDescriptor);
 
 				cmd = spawn(jobDescriptor.command, jobDescriptor.args, {
-					cwd: jobDescriptor.basePath
+					cwd: jobDescriptor.cwd
 				});
 
 				cmd.stdout.on('data', function (data) {

@@ -4,12 +4,12 @@ module.exports = {
 	showcase: {
 		name: 'Showcase',
 		description: '',
-		basePath: fs.realpathSync(__dirname),
+		cwd: fs.realpathSync(__dirname),
 		variants: {
 			eliza: {
 				name: 'Eliza',
 				description: 'Eliza chat bot. Isn\'t she awesome?',
-				basePath: '~/Desktop/Dev/eliza-cli',
+				cwd: '~/Desktop/Dev/eliza-cli',
 				command: 'node',
 				args: ['eliza']
 			},
@@ -24,7 +24,7 @@ module.exports = {
 				description: 'Calls ls -la in app folder',
 				command: 'ls',
 				args: ['-la']
-			},
+			}
 		}
 	}
 };
