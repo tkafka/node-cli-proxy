@@ -20,7 +20,7 @@ Example jobs.js file:
 				eliza: {
 					name: 'Eliza',
 					description: 'Eliza chat bot. Isn\'t she awesome?',
-					cwd: '~/eliza-cli', // cwd can be overriden for a job variant
+					cwd: '~/eliza-cli', // cwd can be overridden for a job variant
 					command: 'node',
 					args: ['eliza']
 				},
