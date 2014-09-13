@@ -81,6 +81,7 @@ SocketServer.prototype.listen = function (httpServer) {
 				});
 
 				cmd.on('error', function (e) {
+					debug('app error - ' + jobStrVariant, e.stack);
 					socketError(socket, 'Running process produced following error: ' + e.message);
 				});
 

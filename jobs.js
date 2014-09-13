@@ -7,7 +7,7 @@ module.exports = {
 			eliza: {
 				name: 'Eliza',
 				description: 'Eliza chat bot. Isn\'t she awesome?',
-				cwd: '~/eliza-cli',
+				cwd: '/home/dokku/eliza-cli',
 				command: 'node',
 				args: ['eliza']
 			},
