@@ -6,16 +6,23 @@ module.exports = {
 		description: '',
 		basePath: fs.realpathSync(__dirname),
 		variants: {
+			eliza: {
+				name: 'Eliza',
+				description: 'Eliza chat bot. Isn\'t she awesome?',
+				basePath: '~/Desktop/Dev/eliza-cli',
+				command: 'node',
+				args: ['eliza']
+			},
 			ls: {
 				name: 'ls',
 				description: 'Calls ls in app folder',
-				script: 'ls',
+				command: 'ls',
 				args: []
 			},
 			lsla: {
 				name: 'ls -la',
 				description: 'Calls ls -la in app folder',
-				script: 'ls',
+				command: 'ls',
 				args: ['-la']
 			},
 		}
