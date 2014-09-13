@@ -7,8 +7,8 @@ module.exports = {
 			eliza: {
 				name: 'Eliza',
 				description: 'Eliza chat bot. Isn\'t she awesome?',
-				// cwd: '/home/dokku/eliza-cli',
-				cwd: '/Users/tk/eliza-cli',
+				cwd: '/home/dokku/eliza-cli',
+//				cwd: '/Users/tk/eliza-cli',
 				command: 'node',
 				args: ['eliza']
 			},
