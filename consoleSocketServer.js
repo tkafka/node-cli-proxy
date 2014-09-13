@@ -1,6 +1,7 @@
 var spawn = require('child_process').spawn;
 var debug = require('debug')('consoleSocketServer');
 var socketIo = require('socket.io');
+var fs = require('fs');
 
 var getFreshJobs = require('./utils/getFreshJobs');
 var randomJobId = require('./utils/random/randomJobId');
@@ -48,7 +49,7 @@ SocketServer.prototype.listen = function (httpServer) {
 					id: jobId,
 					command: jobVariant.command,
 					args: jobVariant.args || [],
-					cwd: jobVariant.cwd || job.cwd || __dirname
+					cwd: fs.realpathSync(jobVariant.cwd || job.cwd || __dirname)
 				};
 
 				socket.emit('job start', jobDescriptor);
