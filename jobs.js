@@ -9,7 +9,7 @@ module.exports = {
 			eliza: {
 				name: 'Eliza',
 				description: 'Eliza chat bot. Isn\'t she awesome?',
-				cwd: '~/Desktop/Dev/eliza-cli',
+				cwd: '~/eliza-cli',
 				command: 'node',
 				args: ['eliza']
 			},
