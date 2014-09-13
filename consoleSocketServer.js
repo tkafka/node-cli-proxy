@@ -54,7 +54,7 @@ SocketServer.prototype.listen = function (httpServer) {
 					};
 				} catch (e) {
 					socketErrorAndDisconnect(socket, 'Error resolving process path: ' + e.message);
-					// return;
+					return;
 				}
 
 				socket.emit('job start', jobDescriptor);

@@ -15,15 +15,34 @@ var KeystrokeListener = function (document) {
 	$(document).keydown(this._keyDownEventHandler.bind(this));
 	$(document).keyup(this._keyUpEventHandler.bind(this));
 	$(document).keypress(this._keyPressEventHandler.bind(this));
+
+	// for mobile:
+	this._$body = $('body');
+	this._$input = $('<textarea class="for-input"></textarea>');
+	this._$body.append(this._$input);
+	this._focusInput = function(e) {
+		if (this._enabled) {
+			e && e.stopPropagation();
+			e && e.preventDefault();
+		}
+		this._$input/*focus()*/.blur().focus();
+	}.bind(this);
 };
 inherits(KeystrokeListener, EventEmitter);
 
 KeystrokeListener.prototype.enable = function () {
 	this._enabled = true;
+	this._$input.show();
+	this._$body.on('mousedown', this._focusInput);
+	this._$body.on('touchstart', this._focusInput);
+	setTimeout(this._focusInput, 0);
 };
 
 KeystrokeListener.prototype.disable = function () {
 	this._enabled = false;
+	this._$body.off('mousedown', this._focusInput);
+	this._$body.off('touchstart', this._focusInput);
+	this._$input.hide();
 };
 
 KeystrokeListener.prototype._keyDownEventHandler = function (e) {

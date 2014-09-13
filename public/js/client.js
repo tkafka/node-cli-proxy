@@ -59,7 +59,6 @@ $(function () {
 				return a.match(/[ "]/) ? '"' + a.replace(/"/g, '\\"') + '"' : a;
 			}).join(' ')
 				: '');
-		console.log('job start', desc, command);
 		consoleDisplay.infoServer('Job ' + desc.id + ' started: ' + command);
 		consoleDisplay.infoServer('Job path: ' + desc.cwd);
 		consoleDisplay.enableInput();
