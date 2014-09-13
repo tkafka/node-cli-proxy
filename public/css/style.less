@@ -75,6 +75,33 @@ ul.menu-horizontal {
 	}
 }
 
+pre.error {
+	white-space: pre-wrap;
+	word-wrap: break-word;
+}
+
+#content {
+	padding: 2em;
+
+	.message {
+		img {
+			width: 529px;
+			height: 380px
+		}
+	}
+
+	h2 {
+		margin: 0;
+	}
+
+	code {
+		display: block;
+		background: #f8f8f8;
+		padding: 1em;
+		font-size: 85%;
+	}
+}
+
 #console {
 	font-family: monospace;
 	padding: 1em;
@@ -86,7 +113,8 @@ ul.menu-horizontal {
 	left: 0;
 	right: 0;
 
-	overflow-y: auto;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
 
 	background: #111;
 	color: #bbb;

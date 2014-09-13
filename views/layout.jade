@@ -15,13 +15,14 @@ html(lang='en')
 			block header
 				h1
 					a(href='/') Script runner
-				ul.menu.menu-horizontal
-					each job, key in jobs
-						li
-							a(href='/'+key)
-								span.title= job.name
-								if job.description
-									span.description= job.description
+				if jobs
+					ul.menu.menu-horizontal
+						each job, key in jobs
+							li
+								a(href='/'+key)
+									span.title= job.name
+									if job.description
+										span.description= job.description
 
 		#content
 			block content

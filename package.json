@@ -3,8 +3,8 @@
   "description": "web proxy for console app",
   "author": "Tomas Kafka <tk@tomaskafka.com>",
   "version": "0.0.1",
-  "scripts": { 
-    "start": "node ./bin/server" 
+  "scripts": {
+    "start": "node ./bin/server"
   },
   "dependencies": {
     "ansi-to-html": "^0.2.0",
@@ -14,6 +14,7 @@
     "express": "^4.8.7",
     "jade": "^1.6.0",
     "less-middleware": "^1.0.4",
+    "markdown": "^0.5.0",
     "morgan": "^1.3.0",
     "socket.io": "^1.0.6",
     "ws": "^0.4.32"

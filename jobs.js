@@ -1,10 +1,8 @@
-var fs = require('fs');
-
 module.exports = {
 	showcase: {
 		name: 'Showcase',
 		description: '',
-		cwd: fs.realpathSync(__dirname),
+		cwd: __dirname,
 		variants: {
 			eliza: {
 				name: 'Eliza',
