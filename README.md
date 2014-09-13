@@ -1,7 +1,7 @@
 Node.js web frontend server-side interactive cli programs
 ---
 
-Define jobs in [jobs.js](https://github.com/tkafka/node-cli-proxy/blob/master/jobs.js), and let users run them and interact with their stdin through web browser.
+Define server-side jobs, and let users run them and interact with their stdin through web browser.
 
 Try the [showcase](/showcase), I recommend talking to [Eliza](https://github.com/tkafka/eliza-cli) :).
 
@@ -9,7 +9,7 @@ Try the [showcase](/showcase), I recommend talking to [Eliza](https://github.com
 
 This is very useful for all kinds of automation, as you don't have to develop web frontend for your scripts and programs.
 
-Example jobs.js file:
+Example [jobs.js](https://github.com/tkafka/node-cli-proxy/blob/master/jobs.js) file:
 
 	module.exports = {
 		showcase: {
