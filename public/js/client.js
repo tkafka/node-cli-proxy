@@ -21,6 +21,7 @@ $(function () {
 
 	var socket = io();
 	var jobInProgressId = null;
+	var jobFinished = false;
 
 	consoleDisplay.on('newline', function(buffer) {
 		if (jobInProgressId) {
@@ -49,9 +50,9 @@ $(function () {
 	});
 	*/
 
-	socket.on('job start', function (id) {
+	socket.on('job start', function (desc) {
 		jobInProgressId = id;
-		consoleDisplay.infoServer('Job ' + id + ' started.');
+		consoleDisplay.infoServer('Job ' + desc.id + ' started.');
 		consoleDisplay.enableInput();
 	});
 	socket.on('job state', function (msg) {
@@ -63,14 +64,19 @@ $(function () {
 	socket.on('job stderr', function (msg) {
 		consoleDisplay.stderr(msg);
 	});
-	socket.on('job end', function (id) {
+	socket.on('job end', function (desc) {
 		jobInProgressId = null;
-		consoleDisplay.infoServer('Job ' + id + ' ended.');
+		jobFinished = true;
+		consoleDisplay.infoServer('Job ' + desc.id + ' ended' + (desc.code ? ' with code ' + desc.code : '') + '.');
 		consoleDisplay.disableInput();
 	});
 	socket.on('disconnect', function () {
 		jobInProgressId = null;
-		consoleDisplay.warningServer('Socket disconnected, job was finished or killed on server.');
+		if (jobFinished) {
+			consoleDisplay.infoServer('Socket disconnected, job was finished on server.');
+		} else {
+			consoleDisplay.warningServer('Socket disconnected, job was probably killed on server.');
+		}
 		consoleDisplay.disableInput();
 	});
 	socket.on('api error', function (message) {

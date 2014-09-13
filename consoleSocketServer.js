@@ -70,17 +70,17 @@ SocketServer.prototype.listen = function (httpServer) {
 				});
 
 				cmd.on('close', function (code) {
-					socket.emit('job end', jobId);
+					socket.emit('job end', { 
+						id: jobId, 
+						code: code 
+					});
 					socket.disconnect();
 					cmd = null;
 					jobId = null;
 				});
 
 				cmd.on('error', function (e) {
-					socket.emit('job end', jobId);
-					socketErrorAndDisconnect(socket, 'Process could not be started with a following error: ' + e.message);
-					cmd = null;
-					jobId = null;
+					socketError(socket, 'Running process produced following error: ' + e.message);
 				});
 
 				socket.emit('job state', 'Job ' + jobDesc.jobKey + '/' + jobDesc.jobVariantKey + ' started on server.');
