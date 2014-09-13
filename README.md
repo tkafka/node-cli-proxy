@@ -1,4 +1,4 @@
-Node.js web frontend server-side interactive cli programs
+Node.js web frontend for interactive cli programs
 ---
 
 Define server-side jobs, and let users run them and interact with their stdin through web browser.
