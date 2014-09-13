@@ -45,12 +45,17 @@ SocketServer.prototype.listen = function (httpServer) {
 				jobStrVariant = jobDesc.jobKey + '/' + jobDesc.jobVariantKey;
 				jobStrId = jobStrVariant + '(' + jobId + ')';
 
-				var jobDescriptor = {
-					id: jobId,
-					command: jobVariant.command,
-					args: jobVariant.args || [],
-					cwd: fs.realpathSync(jobVariant.cwd || job.cwd || __dirname)
-				};
+				try {
+					var jobDescriptor = {
+						id: jobId,
+						command: jobVariant.command,
+						args: jobVariant.args || [],
+						cwd: fs.realpathSync(jobVariant.cwd || job.cwd || __dirname)
+					};
+				} catch (e) {
+					socketErrorAndDisconnect(socket, 'Error resolving process path: ' + e.message);
+					// return;
+				}
 
 				socket.emit('job start', jobDescriptor);
 
