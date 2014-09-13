@@ -59,8 +59,7 @@ $(function () {
 				return a.match(/[ "]/) ? '"' + a.replace(/"/g, '\\"') + '"' : a;
 			}).join(' ')
 				: '');
-		consoleDisplay.infoServer('Job ' + desc.id + ' started: ' + command);
-		consoleDisplay.infoServer('Job path: ' + desc.cwd);
+		consoleDisplay.infoServer('Job ' + desc.id + ' started: ' + desc.cwd + ' $ ' + command);
 		consoleDisplay.enableInput();
 	});
 	socket.on('job state', function (msg) {
