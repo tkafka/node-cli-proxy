@@ -1,7 +1,7 @@
 Node.js proxy for server-side interactive cli programs
 ---
 
-Define jobs in [jobs.js](https://github.com/tkafka/node-console-proxy/blob/master/jobs.js), and let users run them and interact with their stdin through web browser.
+Define jobs in [jobs.js](https://github.com/tkafka/node-cli-proxy/blob/master/jobs.js), and let users run them and interact with their stdin through web browser.
 
 Try the [showcase](/showcase), I recommend talking to [Eliza](https://github.com/tkafka/eliza-cli) :).
 
@@ -38,4 +38,4 @@ Jobs file is reloaded on every request, so feel free to edit it on the go.
 
 Made in Prague by [@keff85](http://twitter.com/keff85).
 
-Source at [github.com/tkafka/node-console-proxy](https://github.com/tkafka/node-console-proxy).
+Source at [github.com/tkafka/node-cli-proxy](https://github.com/tkafka/node-cli-proxy).

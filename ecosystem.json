@@ -16,7 +16,7 @@
 			"host" : "95.85.50.154",
 			"port" : "6789",
 			"ref"  : "origin/master",
-			"repo" : "git@github.com:tkafka/node-console-proxy.git",
+			"repo" : "git@github.com:tkafka/node-cli-proxy.git",
 			"path" : "/home/dokku/console-proxy-demo",
 			"post-deploy" : "npm install && pm2 startOrRestart ecosystem.json --env production"
 		},
@@ -24,7 +24,7 @@
 			"user" : "tk",
 			"host" : "localhost",
 			"ref"  : "origin/master",
-			"repo" : "git@github.com:tkafka/node-console-proxy.git",
+			"repo" : "git@github.com:tkafka/node-cli-proxy.git",
 			"path" : "/Users/tk/Desktop/Dev/console-proxy-deploy",
 			"post-deploy" : "npm install && pm2 startOrRestart ecosystem.json --env dev"
 		}
