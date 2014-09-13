@@ -11,7 +11,7 @@ This is very useful for all kinds of automation, as you don't have to develop we
 
 Example jobs.js file:
 
-	module.eports = {
+	module.exports = {
 		showcase: {
 			name: 'Showcase',
 			description: '',
