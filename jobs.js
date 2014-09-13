@@ -1,3 +1,5 @@
+var os = require("os");
+
 module.exports = {
 	showcase: {
 		name: 'Showcase',
@@ -7,8 +9,10 @@ module.exports = {
 			eliza: {
 				name: 'Eliza',
 				description: 'Eliza chat bot. Isn\'t she awesome?',
-				cwd: '/home/dokku/eliza-cli',
-//				cwd: '/Users/tk/eliza-cli',
+				cwd:
+					os.hostname().match(/\.local$/)
+						? '/Users/tk/eliza-cli'
+						: '/home/dokku/eliza-cli',
 				command: 'node',
 				args: ['eliza']
 			},
