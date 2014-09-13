@@ -3,7 +3,7 @@
 		"name"      : "console-proxy-demo",
 		"script"    : "bin/server.js",
 		"env": {
-			"DEBUG": "",
+			"DEBUG": "server,consoleSocketServer",
 			"PORT": "3999"
 		},
 		"env_production" : {

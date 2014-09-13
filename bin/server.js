@@ -4,7 +4,8 @@ var app = require('../app');
 var consoleSocketServer = require('../consoleSocketServer');
 
 // SERVER
-app.set('port', process.env['PORT'] || 4000);
+var port = process.env['PORT'] || 4000;
+app.set('port', port);
 
 var server = app.listen(app.get('port'), function() {
 	debug('Express server listening on port ' + server.address().port);
