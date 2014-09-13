@@ -82,11 +82,22 @@ pre.error {
 
 textarea.for-input {
 	position: absolute;
-	left: 0;
-	right: 0;
 
 	opacity: 0;
 	z-index: 0;
+
+	padding: 0;
+	border: none;
+
+	&.visible {
+		/*
+		bottom: 0;
+
+		z-index: 1000;
+		opacity: 1;
+		width: 100%;
+		*/
+	}
 }
 
 #content {

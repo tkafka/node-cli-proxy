@@ -1,9 +1,12 @@
 var EventEmitter = require('events').EventEmitter;
 var inherits = require('util').inherits;
+var os = require('./os');
 
 var ctrlKey = 17;
 
-var KeystrokeListener = function (document) {
+var KeystrokeListener = function (document, theConsole) {
+	this._console = theConsole;
+
 	this._buffer = '';
 	this._enabled = false;
 
@@ -18,31 +21,47 @@ var KeystrokeListener = function (document) {
 
 	// for mobile:
 	this._$body = $('body');
-	this._$input = $('<textarea class="for-input"></textarea>');
-	this._$body.append(this._$input);
-	this._focusInput = function(e) {
-		if (this._enabled) {
-			e && e.stopPropagation();
-			e && e.preventDefault();
+	if (os.mobile) {
+		this._$input = $('<textarea class="for-input"></textarea>');
+		this._$body.append(this._$input);
+		this._focusInput = function(e) {
+			if (this._enabled) {
+				e && e.stopPropagation();
+				e && e.preventDefault();
+			}
+			this._$input.focus().blur().focus();
+		}.bind(this);
+
+		if (!os.ios) {
+			this._$input.addClass('visible');
 		}
-		this._$input/*focus()*/.blur().focus();
-	}.bind(this);
+
+		// and update textarea position to move cursor which is still visible
+		this._console.on('textarea position', function(offset) {
+			this._$input.css('top', offset.top - 2);
+			this._$input.css('left', offset.left - 2);
+		}.bind(this));
+	}
 };
 inherits(KeystrokeListener, EventEmitter);
 
 KeystrokeListener.prototype.enable = function () {
 	this._enabled = true;
-	this._$input.show();
-	this._$body.on('mousedown', this._focusInput);
-	this._$body.on('touchstart', this._focusInput);
-	setTimeout(this._focusInput, 0);
+	if (this._$input) {
+		this._$input.show();
+		this._$body.on('mousedown', this._focusInput);
+		this._$body.on('touchstart', this._focusInput);
+		setTimeout(this._focusInput, 0);
+	}
 };
 
 KeystrokeListener.prototype.disable = function () {
 	this._enabled = false;
-	this._$body.off('mousedown', this._focusInput);
-	this._$body.off('touchstart', this._focusInput);
-	this._$input.hide();
+	if (this._$input) {
+		this._$body.off('mousedown', this._focusInput);
+		this._$body.off('touchstart', this._focusInput);
+		this._$input.hide();
+	}
 };
 
 KeystrokeListener.prototype._keyDownEventHandler = function (e) {
