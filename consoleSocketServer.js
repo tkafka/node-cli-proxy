@@ -52,6 +52,17 @@ SocketServer.prototype.listen = function (httpServer) {
 						args: jobVariant.args || [],
 						cwd: fs.realpathSync(jobVariant.cwd || job.cwd || __dirname)
 					};
+
+					var uid = null;
+					if (job.hasOwnProperty('uid')) uid = job.uid;
+					if (jobVariant.hasOwnProperty('uid')) uid = jobVariant.uid;
+					if (uid != null) jobDescriptor.uid = uid;
+
+					var gid = undefined;
+					if (job.hasOwnProperty('gid')) gid = job.gid;
+					if (jobVariant.hasOwnProperty('gid')) gid = jobVariant.gid;
+					if (gid != null) jobDescriptor.gid = gid;
+
 				} catch (e) {
 					socketErrorAndDisconnect(socket, 'Error resolving process path: ' + e.message);
 					return;
@@ -59,9 +70,7 @@ SocketServer.prototype.listen = function (httpServer) {
 
 				socket.emit('job start', jobDescriptor);
 
-				cmd = spawn(jobDescriptor.command, jobDescriptor.args, {
-					cwd: jobDescriptor.cwd
-				});
+				cmd = spawn(jobDescriptor.command, jobDescriptor.args, jobDescriptor);
 
 				cmd.stdout.on('data', function (data) {
 					var str = data.toString();
