@@ -3,7 +3,7 @@ Node.js web frontend for interactive cli programs
 
 Define server-side jobs, and let users run them and interact with their stdin through web browser.
 
-Try the [showcase](/showcase), I recommend talking to [Eliza](https://github.com/tkafka/eliza-cli) :).
+Try the [showcase](/showcase), I recommend playing Zork or talking to [Eliza](https://github.com/tkafka/eliza-cli) :).
 
 ![Talking to Eliza](http://tmskfk.com:3999/images/eliza-cli.png)
 
