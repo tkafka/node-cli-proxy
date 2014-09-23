@@ -36,6 +36,8 @@ SocketServer.prototype.listen = function (httpServer) {
 				socketErrorAndDisconnect(socket, 'Job key "' + jobDesc.jobKey + '" not found.');
 			} else if (!jobs[jobDesc.jobKey].variants.hasOwnProperty(jobDesc.jobVariantKey)) {
 				socketErrorAndDisconnect(socket, 'Job "' + jobDesc.jobKey + '" doesn\'t have variant "' + jobDesc.jobVariantKey + '".');
+			} else if (!jobs[jobDesc.jobKey].variants[jobDesc.jobVariantKey].command) {
+				socketErrorAndDisconnect(socket, 'Job "' + jobDesc.jobKey + '" variant "' + jobDesc.jobVariantKey + '" doesn\'t have command.');
 			} else {
 				jobId = randomJobId();
 
@@ -70,7 +72,14 @@ SocketServer.prototype.listen = function (httpServer) {
 
 				socket.emit('job start', jobDescriptor);
 
-				cmd = spawn(jobDescriptor.command, jobDescriptor.args, jobDescriptor);
+				try {
+					debug('Spawn process', jobDescriptor.command, jobDescriptor.args, jobDescriptor);
+					cmd = spawn(jobDescriptor.command, jobDescriptor.args, jobDescriptor);
+				} catch (e) {
+					debug('Spawn thrown error', e);
+					socketErrorAndDisconnect(socket, 'Starting process produced following error: ' + e.message);
+					return;
+				}
 
 				cmd.stdout.on('data', function (data) {
 					var str = data.toString();
