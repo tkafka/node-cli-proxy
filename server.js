@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 var debug = require('debug')('server');
-var app = require('../app');
-var consoleSocketServer = require('../consoleSocketServer');
+var app = require('./server/app');
+var consoleSocketServer = require('./server/consoleSocketServer');
 
 // SERVER
 var port = process.env['PORT'] || 4000;

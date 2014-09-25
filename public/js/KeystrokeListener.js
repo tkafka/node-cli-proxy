@@ -65,13 +65,23 @@ KeystrokeListener.prototype.disable = function () {
 };
 
 KeystrokeListener.prototype._keyDownEventHandler = function (e) {
-	// we need to catch backspace here
+	// we need to catch backspace and tab here
 	if (e.keyCode === 8)
 	{
+		// backspace
 		this._buffer = this._buffer.slice(0, -1);
 		this.emit('backspace', this._buffer);
 		e.preventDefault();
-	} else if (e.keyCode == ctrlKey) {
+	}
+	else if (e.keyCode === 9)
+	{
+		// tab
+		this._buffer = this._buffer + '\t';
+		this.emit('character', { c: '\t', buffer: this._buffer });
+		e.preventDefault();
+	}
+	else if (e.keyCode == ctrlKey)
+	{
 		this._modKeys.ctrl = true;
 	}
 };
@@ -102,8 +112,9 @@ KeystrokeListener.prototype._keyPressEventHandler = function (e) {
 
 	} else if (e.keyCode === 8) {
 		// backspace was already handled
+	} else if (e.keyCode === 9) {
+		// tab was already handled
 	} else if (char) {
-		// letter from a list
 		this._buffer = this._buffer + char;
 		this.emit('character', { c: char, buffer: this._buffer });
 		// this.emit('letter', this._buffer);

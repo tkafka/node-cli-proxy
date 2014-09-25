@@ -1,7 +1,7 @@
 {
 	"apps" : [{
-		"name"      : "console-proxy-demo",
-		"script"    : "bin/server.js",
+		"name"      : "geewa-tools-console-proxy",
+		"script"    : "server.js",
 		"env": {
 			"DEBUG": "server,consoleSocketServer",
 			"PORT": "3999"
@@ -11,7 +11,7 @@
 		}
 	}],
 	"deploy" : {
-		"production" : {
+		"dokku" : {
 			"user" : "dokku",
 			"host" : "95.85.50.154",
 			"port" : "6789",
@@ -19,14 +19,6 @@
 			"repo" : "git@github.com:tkafka/node-cli-proxy.git",
 			"path" : "/home/dokku/console-proxy-demo",
 			"post-deploy" : "npm install && pm2 startOrRestart ecosystem.json --env production"
-		},
-		"dev" : {
-			"user" : "tk",
-			"host" : "localhost",
-			"ref"  : "origin/master",
-			"repo" : "git@github.com:tkafka/node-cli-proxy.git",
-			"path" : "/Users/tk/Desktop/Dev/console-proxy-deploy",
-			"post-deploy" : "npm install && pm2 startOrRestart ecosystem.json --env dev"
 		}
 	}
 }

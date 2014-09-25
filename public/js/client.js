@@ -15,8 +15,6 @@ $(function () {
 			jobVariantKey: jobVariantKey
 		});
 
-		clickyLogGoal('job-' + jobKey + '/' + jobVariantKey);
-
 		$overlay.hide();
 
 		e.preventDefault();

@@ -6,7 +6,7 @@ block content
 			ul#job-variants.menu.job-variants
 				each variant, key in jobVariants
 					li
-						a(href='#'+key,class=variant.cssClass?variant.cssClass:'')
+						a.button(href='#'+key,class=variant.cssClass?variant.cssClass:'')
 							span.title= variant.name
 							if variant.description
 								span.description= variant.description

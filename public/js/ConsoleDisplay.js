@@ -23,10 +23,6 @@ function scrollToBottomOfDiv($div) {
 	$div.scrollTop(scrollHeight);
 }
 
-function createInputBuffer() {
-	return $('<div class="input-buffer"></div>');
-}
-
 var scrollSlack = 10;
 
 var ConsoleDisplay = function ($root) {
@@ -34,9 +30,10 @@ var ConsoleDisplay = function ($root) {
 
 	this._lastLineSource = null;
 	this._lastLineClass = null;
-	this.$lastLine = this._createAndAppendLine();
+	this.$lastLineOutput = this._createAndAppendLine();
 
-	this.$inputLine = createInputBuffer();
+	this._inputActive = false;
+	this.$inputLine = this._createInputBuffer();
 	this.$root.append(this.$inputLine);
 
 	this._keystrokeListener = new KeystrokeListener(document, this);
@@ -74,11 +71,12 @@ var ConsoleDisplay = function ($root) {
 	this._keystrokeListener.on('newline', function(buffer) {
 		this.emit('newline', buffer);
 		// this.emit('line', buffer);
+		this.$inputLine.removeClass('input-buffer-active');
 		this.$inputLine.addClass('input-buffer-sent');
 
 		// create new input buffer for future input, and add it to end
-		this.$inputLine = createInputBuffer();
-		this.$lastLine.append(this.$inputLine);
+		this.$inputLine = this._createInputBuffer();
+		this.$lastLineOutput.append(this.$inputLine);
 
 		this._writeLine(''); // hack, to ensure that $inputLine won't get deleted. this needs to go after creating a new buffer, so that we don't put finished input line into a new text line.
 
@@ -86,6 +84,10 @@ var ConsoleDisplay = function ($root) {
 	}.bind(this));
 };
 inherits(ConsoleDisplay, EventEmitter);
+
+ConsoleDisplay.prototype._createInputBuffer = function() {
+	return $('<span class="input-buffer' + (this._inputActive ? ' input-buffer-active' : '') + '"></span>');
+};
 
 ConsoleDisplay.prototype._updateTextareaPosition = function() {
 	var $span = $('<span></span>');
@@ -114,6 +116,8 @@ ConsoleDisplay.prototype._writeLine = function (str, cssClass) {
 };
 
 ConsoleDisplay.prototype._write = function (str, cssClass) {
+	// console.log('"' + str + '"');
+
 	var lines = str.split('\n');
 	if (lines.length === 0) {
 		return;
@@ -121,22 +125,20 @@ ConsoleDisplay.prototype._write = function (str, cssClass) {
 
 	var wasScrolledToBottom = isDivScrolledToBottom(this.$root, scrollSlack);
 
-	var startLine = 0;
-	if (this._lastLineSource
+	if (this._lastLineSource != null
 		&& this._lastLineClass == cssClass)
 	{
 		// append to existing current line
-		startLine = 1;
-		this._lastLineSource += lines[0];
+		this._lastLineSource += lines.shift(); // consume first line
 		var lastLineHtml = ansiToHtml.toHtml(escapeInHtmlContext(this._lastLineSource));
-		this.$lastLine.html(lastLineHtml);
+		this.$lastLineOutput.html(lastLineHtml);
 	}
 
 	// some lines remaining?
 	// remember, if last line was ended with \n, last line entry will be empty string
-	for (var i = startLine, l = lines.length; i<l; i++) {
+	for (var i = 0, l = lines.length; i<l; i++) {
 		var strHtml = ansiToHtml.toHtml(escapeInHtmlContext(lines[i])); // .replace(/\n/g, '<br/>')
-		this.$lastLine = this._createAndAppendLine(lines[i], strHtml, cssClass);
+		this.$lastLineOutput = this._createAndAppendLine(lines[i], strHtml, cssClass);
 	}
 
 	if (wasScrolledToBottom) {
@@ -149,20 +151,34 @@ ConsoleDisplay.prototype._write = function (str, cssClass) {
 ConsoleDisplay.prototype._createAndAppendLine = function(strSource, strHtml, cssClass) {
 	this._lastLineSource = strSource;
 	this._lastLineClass = cssClass;
-	var $line = $('<div class="line' + (cssClass ? ' ' + cssClass : '') +'">' + (strHtml ? strHtml : '') + '</div>');
+	var $line = $('<div class="line' + (cssClass ? ' ' + cssClass : '') +'">' + '</div>');
+	var $lineOutput = $('<span class="line-output">' + (strHtml ? strHtml : '') + '</span>');
+	$line.append($lineOutput);
 	this.$root.append($line);
 	// move input line at the end
 	$line.append(this.$inputLine);
-	return $line;
+	return $lineOutput;
 };
 
 
 ConsoleDisplay.prototype.enableInput = function () {
-	this._keystrokeListener.enable();
+	this._inputActive = true;
+	this._inputActiveChanged();
 };
 
 ConsoleDisplay.prototype.disableInput = function () {
-	this._keystrokeListener.disable();
+	this._inputActive = false;
+	this._inputActiveChanged();
+};
+
+ConsoleDisplay.prototype._inputActiveChanged = function () {
+	if (this._inputActive) {
+		this._keystrokeListener.enable();
+		this.$inputLine.addClass('input-buffer-active');
+	} else {
+		this._keystrokeListener.disable();
+		this.$inputLine.removeClass('input-buffer-active');
+	}
 };
 
 ConsoleDisplay.prototype.clear = function () {
