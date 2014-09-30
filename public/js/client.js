@@ -1,5 +1,8 @@
 var ConsoleDisplay = require('./ConsoleDisplay');
 
+var io = window['io'];
+var jobKey = window['jobKey'];
+var jobVariantKey = window['jobVariantKey'];
 
 $(function () {
 	var consoleDisplay = new ConsoleDisplay($('#console'));
