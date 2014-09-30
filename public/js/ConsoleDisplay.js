@@ -160,6 +160,15 @@ ConsoleDisplay.prototype._createAndAppendLine = function(strSource, strHtml, css
 	return $lineOutput;
 };
 
+ConsoleDisplay.prototype.appendElement = function($element) {
+	var $elementContainer = $('<div class="line line-content"></div>');
+	$elementContainer.append($element);
+	this.$root.append($elementContainer);
+};
+
+ConsoleDisplay.prototype.scrollToBottom = function() {
+	scrollToBottomOfDiv(this.$root);
+};
 
 ConsoleDisplay.prototype.enableInput = function () {
 	this._inputActive = true;

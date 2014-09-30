@@ -21,11 +21,14 @@
 }
 
 
-.gradient-vertical(@baseColor: #eee, @spread: 1.0) {
+.gradient-vertical(@baseColor: #eee, @spread: 10%) {
 	background-color: @baseColor;
 
-	@colorTop: overlay(@baseColor, rgba(255,255,255,@spread));
-	@colorBottom: overlay(@baseColor, rgba(0,0,0,@spread));
+	// @colorTop: overlay(@baseColor, rgba(255,255,255,@spread));
+	// @colorBottom: overlay(@baseColor, rgba(0,0,0,@spread));
+
+	@colorTop: lighten(@baseColor, @spread);
+	@colorBottom: darken(@baseColor, @spread);
 
 	background-image: -webkit-gradient(linear, left top, left bottom, from(@colorTop), to(@colorBottom));
 	background-image: -webkit-linear-gradient(top, @colorTop, @colorBottom);

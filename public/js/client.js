@@ -86,6 +86,15 @@ $(function () {
 			consoleDisplay.warningServer('Socket disconnected, job was probably killed on server.');
 		}
 		consoleDisplay.disableInput();
+
+		// show button
+		var $link = $('<a href="" class="button button-new-job">Start another job?</a>');
+		var $wrapper = $('<div class="wrapper-new-job"></div>');
+		$wrapper.append($link);
+		consoleDisplay.appendElement($wrapper);
+		setTimeout(function() {
+			consoleDisplay.scrollToBottom();
+		}, 0);
 	});
 	socket.on('api error', function (message) {
 		consoleDisplay.errorServer('Server sends error: ' + message);

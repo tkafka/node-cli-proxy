@@ -1,0 +1,34 @@
+@import "./_mixins";
+
+.button(@color, @colorTitle, @bgColor) {
+	display: block;
+	text-decoration: none;
+	padding: 1em 2em;
+
+	.gradient-vertical(@bgColor);
+
+	border: 1px solid rgba(128,128,128,1);
+	box-shadow: inset 0 1px rgba(255,255,255,0.5);
+	border-radius: 4px;
+	color: @color;
+
+	.title {
+		color: @colorTitle;
+	}
+
+	&:hover {
+		.gradient-vertical(lighten(@bgColor, 10%));
+		color: darken(@color, 10%);
+		box-shadow: inset 0 1px rgba(255,255,255,1);
+
+		.title {
+			color: darken(@colorTitle, 10%);
+		}
+	}
+	&:active {
+		.gradient-vertical(darken(@bgColor, 10%));
+		box-shadow: inset 0 1px rgba(0,0,0,0.25);
+	}
+
+}
+

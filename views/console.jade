@@ -3,19 +3,15 @@ extends layout
 block content
 	.console-wrapper
 		.overlay
-			ul#job-variants.menu.job-variants
-				each variant, key in jobVariants
-					li
-						a.button(href='#'+key,class=variant.cssClass?variant.cssClass:'')
-							span.title= variant.name
-							if variant.description
-								span.description= variant.description
-		.spinner
-			.rect1
-			.rect2
-			.rect3
-			.rect4
-			.rect5
+			#job-variants
+				ul.menu.job-variants
+					each variant, key in jobVariants
+						li
+							a.button(href='#'+key,class=variant.cssClass?variant.cssClass:'')
+								span.title= variant.name
+								if variant.description
+									span.description= variant.description
+				.help Note: you can edit these jobs in console-proxy/jobs.js
 		#console
 
 block script

@@ -14,12 +14,12 @@ html(lang='en')
 		header
 			block header
 				h1
-					a(href='/') node-cli-proxy
+					a(href='/', class= !jobKey ? 'active' : '') node-cli-proxy
 				if jobs
 					ul.menu.menu-horizontal
 						each job, key in jobs
 							li
-								a(href='/'+key)
+								a(href='/'+key, class=key==jobKey ? 'active' : '')
 									span.title= job.name
 									if job.description
 										span.description= job.description
