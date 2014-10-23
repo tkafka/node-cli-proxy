@@ -1,6 +1,6 @@
 {
 	"apps" : [{
-		"name"      : "geewa-tools-console-proxy",
+		"name"      : "node-cli-proxy",
 		"script"    : "server.js",
 		"env": {
 			"DEBUG": "server,consoleSocketServer",
