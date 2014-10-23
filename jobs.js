@@ -9,8 +9,8 @@ module.exports = {
 			zork: {
 				name: 'Zork',
 				description: 'Wanna be eaten by grue?',
-				cwd: '/home/dokku/zork',
-				command: '/home/dokku/frotz/dfrotz',
+				cwd: '~/node-cli-demo/zork',
+				command: '~/node-cli-demo/frotz/dfrotz',
 				args: [ 'ZORK1.DAT' ],
 				uid: 1000,
 				gid: 1000
@@ -21,7 +21,7 @@ module.exports = {
 				cwd:
 					os.hostname().match(/\.local$/)
 						? '/Users/tk/eliza-cli'
-						: '/home/dokku/eliza-cli',
+						: '~/node-cli-demo/eliza-cli',
 				command: 'node',
 				args: ['eliza']
 			},
